@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <style>
+      .angular-google-map-container {
+          width: 100%;
+          height: 504px;
+      }
+    </style>
+
+    <link href="/css/preview-frame.css" rel="stylesheet">
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+
+    <script>
+// Ionic Starter App
+
+// angular.module is a global place for creating, registering and retrieving Angular modules
+// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// the 2nd parameter is an array of 'requires'
+// 'starter.services' is found in services.js
+// 'starter.controllers' is found in controllers.js
+angular.module('app', ['ionic'])
+
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if(window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+  });
+})
+
+.config(function($stateProvider, $urlRouterProvider) {
+
+  // Ionic uses AngularUI Router which uses the concept of states
+  // Learn more here: https://github.com/angular-ui/ui-router
+  // Set up the various states which the app can be in.
+  // Each state's controller can be found in controllers.js
+  $stateProvider
+    
+    .state('page3', {
+      url: '',
+      templateUrl: 'page3.html'
+    })
+    
+    .state('page5', {
+      url: '/page5',
+      templateUrl: 'page5.html'
+    })
+    
+    .state('page6', {
+      url: '/page6',
+      templateUrl: 'page6.html'
+    })
+    
+    .state('page7', {
+      url: '/page7',
+      templateUrl: 'page7.html'
+    })
+    ;
+
+  // if none of the above states are matched, use this as the fallback
+  
+  $urlRouterProvider.otherwise('');
+  
+
+});
+
+
+    </script>
+  </head>
+  <body ng-app="app" animation="slide-left-right-ios7">
+  <div>
+    <div>
+        <ion-nav-bar class="bar-stable">
+            <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view></ion-nav-view>
+    </div>
+</div>
+<script id="page3.html" type="text/ng-template">
+<ion-view title="Mobile Tracker">
+    <ion-content padding="true" class="has-header has-footer">
+        <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
+            <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+        </div>
+        <div class="spacer" style="height: 100px;"></div>
+        <a href="#/page5" class="button button-stable button-block">Start Record</a>
+        <div class="button-bar"></div>
+        <a href="#/page6" class="button button-stable button-block">View Records</a>
+    </ion-content>
+</ion-view></script>
+<script id="page5.html" type="text/ng-template">
+<ion-view title="Recording">
+    <ion-content padding="true" class="has-header has-footer">
+        <div class="button-bar"></div>
+        <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
+            <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+        </div>
+        <a href="#/page7" class="button button-stable button-block">Stop Recording</a>
+    </ion-content>
+</ion-view></script>
+<script id="page6.html" type="text/ng-template">
+<ion-view title="Records">
+    <ion-content padding="true" class="has-header">
+        <ion-list>
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="search" placeholder="Search">
+            </label>
+            <ion-item href="#/page7">Item 1</ion-item>
+            <ion-item href="#/page7">Item 2</ion-item>
+            <ion-item href="#/page7">Item 3</ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item href="#/page7">Item 4</ion-item>
+            <ion-item href="#/page7">Item 5</ion-item>
+            <ion-item href="#/page7">Item 6</ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item href="#/page7">Item 7</ion-item>
+            <ion-item href="#/page7">Item 8</ion-item>
+            <ion-item href="#/page7">Item 9</ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view></script>
+<script id="page7.html" type="text/ng-template">
+<ion-view title="Path track">
+    <ion-content padding="true" class="has-header has-footer">
+        <div>
+            <p>**Shows the path being tracked in list form.</p>
+        </div>
+        <ion-list>
+            <ion-item>Walk 5 meters straight</ion-item>
+            <ion-item>Turn right</ion-item>
+            <ion-item>Walk 3 meters straight</ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>Turn left</ion-item>
+            <ion-item>.....</ion-item>
+            <ion-item>.....</ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>....</ion-item>
+            <ion-item>....</ion-item>
+            <ion-item>Item 3</ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view></script>
+  </body>
+</html>
