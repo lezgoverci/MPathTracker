@@ -1,25 +1,129 @@
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ngCordova','ionic'])
+// 'starter.services' is found in services.js
+// 'starter.controllers' is found in controllers.js
+var app = angular.module('app', ['ngCordova','ionic']);
 
-.run(function($ionicPlatform) {
+app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs).
-    // The reason we default this to hidden is that native apps don't usually show an accessory bar, at 
-    // least on iOS. It's a dead giveaway that an app is using a Web View. However, it's sometimes
-    // useful especially with forms, though we would prefer giving the user a little more room
-    // to interact with the app.
+    // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if(window.StatusBar) {
-      // Set the statusbar to use the default style, tweak this to
-      // remove the status bar on iOS or change it to use white instead of dark colors.
+      // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
   });
+});
+
+app.config(function($stateProvider, $urlRouterProvider) {
+
+  // Ionic uses AngularUI Router which uses the concept of states
+  // Learn more here: https://github.com/angular-ui/ui-router
+  // Set up the various states which the app can be in.
+  // Each state's controller can be found in controllers.js
+  $stateProvider
+    
+    .state('page3', {
+      url: '',
+      templateUrl: 'page3.html'
+    })
+    
+    .state('page5', {
+      url: '/page5',
+      templateUrl: 'page5.html'
+    })
+    
+    .state('page6', {
+      url: '/page6',
+      templateUrl: 'page6.html'
+    })
+    
+    .state('page7', {
+      url: '/page7',
+      templateUrl: 'page7.html'
+    })
+    ;
+
+  // if none of the above states are matched, use this as the fallback
+  
+  $urlRouterProvider.otherwise('');
+  
+
+});
+
+app.controller('AccelerometerController', function ($scope, $cordovaDeviceOrientation,$cordovaFile, $ionicPlatform) {
+    document.addEventListener("deviceready",
+        $scope.startwatch = function(){
+            var beta = 0;
+            var gamma = 0;
+            var betaOffset = 0;
+            var gammaOffset = 0;
+            var isFirstTime = true;
+            var options = {
+            frequency: 100
+                // if frequency is set, filter is ignored
+            };
+        var watch = $cordovaDeviceOrientation.watchHeading(options).then(
+            null,
+            function(error){},
+            function(result){
+                $scope.magneticHeading = Math.floor(result.magneticHeading);
+            }
+            );
+        window.addEventListener("deviceorientation",function(event){
+            if(isFirstTime){
+                betaOffset = event.beta;
+                gammaOffset = event.gamma;
+                isFirstTime = false;
+                return;
+            }
+            var tempbeta = event.beta - betaOffset;
+            var tempgamma = event.gamma - gammaOffset;
+            if(tempbeta < 0){
+                $scope.beta = Math.floor(360 - Math.abs(tempbeta));
+            }
+            else{
+                $scope.beta = Math.floor(tempbeta);
+            }
+            if(tempgamma < 0){
+                $scope.gamma = Math.floor(360 - Math.abs(tempgamma));
+            }
+            else{
+                $scope.gamma = Math.floor(tempgamma);
+            }
+            
+           
+
+        },true);
+
+        $scope.startRec = function(){
+          var rawdata = {
+                "timestamp": event.timestamp,
+                "beta": $scope.beta,
+                "gamma": $scope.gamma
+            };
+         $cordovaFile.writeFile("file:///data/data/com.ionicframework.pathtracker18766/files/gyrodata.txt",rawdata, {'append':true})
+            .then(function(success){
+                $scope.filecreated = "true";
+                $scope.msg2 = success;
+                $cordovaFile.readAsText("gyrodata.txt")
+                    .then(function(success){
+                        $scope.dataread = success;
+                    },function(error){})
+            },function(error){
+                $scope.filecreated = "false";
+                $scope.msg2 = error;
+            });
+        };
+    },false);
+
+
+
 });
