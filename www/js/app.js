@@ -6,9 +6,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-var app = angular.module('app', ['ngCordova','ionic']);
+angular.module("trackerApp", ['ngCordova','ionic','GyroControllers'])
 
-app.run(function($ionicPlatform) {
+.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,19 +20,26 @@ app.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
   });
-});
+})
 
-app.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
+
+    .state('test',{
+      url: '/test',
+      templateUrl: 'app/test.html',
+      controller: 'GyroReadingsController'
+    })
     
     .state('home', {
       url: '/home',
       templateUrl: 'app/home.html'
+
     })
     
     .state('recording', {
@@ -55,75 +62,5 @@ app.config(function($stateProvider, $urlRouterProvider) {
   
   $urlRouterProvider.otherwise('/home');
   
-
-});
-
-app.controller('AccelerometerController', function ($scope, $cordovaDeviceOrientation,$cordovaFile, $ionicPlatform) {
-    document.addEventListener("deviceready",
-        $scope.startwatch = function(){
-            var beta = 0;
-            var gamma = 0;
-            var betaOffset = 0;
-            var gammaOffset = 0;
-            var isFirstTime = true;
-            var options = {
-            frequency: 100
-                // if frequency is set, filter is ignored
-            };
-        var watch = $cordovaDeviceOrientation.watchHeading(options).then(
-            null,
-            function(error){},
-            function(result){
-                $scope.magneticHeading = Math.floor(result.magneticHeading);
-            }
-            );
-        window.addEventListener("deviceorientation",function(event){
-            if(isFirstTime){
-                betaOffset = event.beta;
-                gammaOffset = event.gamma;
-                isFirstTime = false;
-                return;
-            }
-            var tempbeta = event.beta - betaOffset;
-            var tempgamma = event.gamma - gammaOffset;
-            if(tempbeta < 0){
-                $scope.beta = Math.floor(360 - Math.abs(tempbeta));
-            }
-            else{
-                $scope.beta = Math.floor(tempbeta);
-            }
-            if(tempgamma < 0){
-                $scope.gamma = Math.floor(360 - Math.abs(tempgamma));
-            }
-            else{
-                $scope.gamma = Math.floor(tempgamma);
-            }
-            
-           
-
-        },true);
-
-        $scope.startRec = function(){
-          var rawdata = {
-                "timestamp": event.timestamp,
-                "beta": $scope.beta,
-                "gamma": $scope.gamma
-            };
-         $cordovaFile.writeFile("file:///data/data/com.ionicframework.pathtracker18766/files/gyrodata.txt",rawdata, {'append':true})
-            .then(function(success){
-                $scope.filecreated = "true";
-                $scope.msg2 = success;
-                $cordovaFile.readAsText("gyrodata.txt")
-                    .then(function(success){
-                        $scope.dataread = success;
-                    },function(error){})
-            },function(error){
-                $scope.filecreated = "false";
-                $scope.msg2 = error;
-            });
-        };
-    },false);
-
-
 
 });
