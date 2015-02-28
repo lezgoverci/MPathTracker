@@ -26,84 +26,13 @@
   </head>
   <body ng-app="app" animation="slide-left-right-ios7">
   <div>
-    <div>
+
         <ion-nav-bar class="bar-stable">
             <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
         </ion-nav-bar>
         <ion-nav-view></ion-nav-view>
-    </div>
+
 </div>
-<script id="page3.html" type="text/ng-template">
-<ion-view title="Mobile Tracker">
-    <ion-content padding="true" class="has-header has-footer">
-        <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
-            <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
-        </div>
-        <div class="spacer" style="height: 100px;"></div>
-        <div class="button" ng-click="startwatch()">start</div>
-        {{beta}}
-        <a href="#/page5" class="button button-stable button-block">Start Record</a>
-        <div class="button-bar"></div>
-        <a href="#/page6" class="button button-stable button-block">View Records</a>
-    </ion-content>
-</ion-view></script>
-<script id="page5.html" type="text/ng-template">
-<ion-view title="Recording">
-    <ion-content padding="true" class="has-header has-footer">
-        <div class="button-bar"></div>
-        <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
-            <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
-        </div>
-       <div>beta: {{beta}}</div>
-        <a href="#/page7" class="button button-stable button-block">Stop Recording</a>
-    </ion-content>
-</ion-view></script>
-<script id="page6.html" type="text/ng-template">
-<ion-view title="Records">
-    <ion-content padding="true" class="has-header">
-        <ion-list>
-            <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="Search">
-            </label>
-            <ion-item href="#/page7">Item 1</ion-item>
-            <ion-item href="#/page7">Item 2</ion-item>
-            <ion-item href="#/page7">Item 3</ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item href="#/page7">Item 4</ion-item>
-            <ion-item href="#/page7">Item 5</ion-item>
-            <ion-item href="#/page7">Item 6</ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item href="#/page7">Item 7</ion-item>
-            <ion-item href="#/page7">Item 8</ion-item>
-            <ion-item href="#/page7">Item 9</ion-item>
-        </ion-list>
-    </ion-content>
-</ion-view></script>
-<script id="page7.html" type="text/ng-template">
-<ion-view title="Path track">
-    <ion-content padding="true" class="has-header has-footer">
-        <div>
-            <p>**Shows the path being tracked in list form.</p>
-        </div>
-        <ion-list>
-            <ion-item>Walk 5 meters straight</ion-item>
-            <ion-item>Turn right</ion-item>
-            <ion-item>Walk 3 meters straight</ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>Turn left</ion-item>
-            <ion-item>.....</ion-item>
-            <ion-item>.....</ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>....</ion-item>
-            <ion-item>....</ion-item>
-            <ion-item>Item 3</ion-item>
-        </ion-list>
-    </ion-content>
-</ion-view></script>
+
   </body>
 </html>

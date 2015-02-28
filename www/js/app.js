@@ -30,30 +30,30 @@ app.config(function($stateProvider, $urlRouterProvider) {
   // Each state's controller can be found in controllers.js
   $stateProvider
     
-    .state('page3', {
-      url: '',
-      templateUrl: 'page3.html'
+    .state('home', {
+      url: '/home',
+      templateUrl: 'app/home.html'
     })
     
-    .state('page5', {
-      url: '/page5',
-      templateUrl: 'page5.html'
+    .state('recording', {
+      url: '/recording',
+      templateUrl: 'app/recording.html'
     })
     
-    .state('page6', {
-      url: '/page6',
-      templateUrl: 'page6.html'
+    .state('records', {
+      url: '/records',
+      templateUrl: 'app/records.html'
     })
     
-    .state('page7', {
-      url: '/page7',
-      templateUrl: 'page7.html'
+    .state('path', {
+      url: '/path',
+      templateUrl: 'app/path.html'
     })
     ;
 
   // if none of the above states are matched, use this as the fallback
   
-  $urlRouterProvider.otherwise('');
+  $urlRouterProvider.otherwise('/home');
   
 
 });
