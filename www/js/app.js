@@ -33,7 +33,6 @@ angular.module("trackerApp", ['ngCordova','ionic','GyroControllers'])
     .state('test',{
       url: '/test',
       templateUrl: 'app/test.html',
-      controller: 'GyroReadingsController'
     })
     
     .state('home', {
