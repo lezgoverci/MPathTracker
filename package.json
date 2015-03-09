@@ -16,6 +16,7 @@
   },
   "cordovaPlugins": [
     "https://github.com/brodysoft/Cordova-SQLitePlugin.git",
-    "org.apache.cordova.device-orientation"
+    "org.apache.cordova.device-orientation",
+    "org.apache.cordova.file"
   ]
 }

@@ -1,30 +1,58 @@
+angular.element(document).ready(function(){
+  angular.bootstrap(document.getElementById('appBody'),['trackerApp']);
+});
+
 var gyroModule = angular.module('GyroControllers',['ngCordova'])
-.controller('GyroReadingsController',function ($scope, Gyro) {
-  
-        $scope.push = function(){Gyro.getGyroData($scope)}
-      
+.controller('GyroReadingsController',function ($scope, Gyro ) {
+
+        $scope.push = function(){
+           Gyro.getGyroData($scope);
+        }
+
+        $scope.view = function(){
+          window.alert($scope.testvalue);          
+        }
 
 });
 
-gyroModule.factory('Gyro', function($cordovaDeviceOrientation,cordovaReady){
-  return {getGyroData: cordovaReady(function($scope){
- var options = {
-      frequency: 3000,
-      filter: true     // if frequency is set, filter is ignored
+
+
+gyroModule.factory('Gyro',function($cordovaDeviceOrientation,cordovaReady){
+
+
+ var arr = [];
+ var obj = new Object();
+
+return{
+    getGyroData: cordovaReady(function($scope){
+    var options = {
+      frequency: 100
     }
 
-    var watch = $cordovaDeviceOrientation.watchHeading(options).then(
+    $cordovaDeviceOrientation.watchHeading(options).then(
       null,
       function(error) {
         // An error occurred
       },
-      function(result) {   // updates constantly (depending on frequency value)
-        $scope.testvalue = result.magneticHeading;
+      function(result) {   
+            obj.magneticHeading = result.magneticHeading;
+            obj.timestamp = result.timestamp;
+            arr.push(JSON.stringify(obj));
+            $scope.testvalue = arr;
 
       });
-  })}
 
+      })
+  }
 });
+      
+    
+
+  
+
+
+
+
 
 gyroModule.factory('cordovaReady', function() {
   return function (fn) {
@@ -48,32 +76,4 @@ gyroModule.factory('cordovaReady', function() {
   };
 });
 
-//////////////////////////////////////////////////////////////////////////////////////////////
 
-
-gyroModule.factory('geolocation', function ($rootScope, cordovaReady) {
-  return {
-    getCurrentPosition: cordovaReady(function (onSuccess, onError, options) {
-      navigator.geolocation.getCurrentPosition(function () {
-        var that = this,
-          args = arguments;
-
-        if (onSuccess) {
-          $rootScope.$apply(function () {
-            onSuccess.apply(that, args);
-          });
-        }
-      }, function () {
-        var that = this,
-          args = arguments;
-
-        if (onError) {
-          $rootScope.$apply(function () {
-            onError.apply(that, args);
-          });
-        }
-      },
-      options);
-    })
-  };
-});
