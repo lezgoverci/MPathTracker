@@ -2,14 +2,11 @@ angular.element(document).ready(function(){
   angular.bootstrap(document.getElementById('appBody'),['trackerApp']);
 });
 
-var gyroModule = angular.module('GyroControllers',['ngCordova'])
-.controller('GyroReadingsController',function ($scope, Gyro ) {
+var gyroModule = angular.module('GyroModule',['ngCordova'])
+.controller('CompassReadingsController',function ($scope, Compass ) {
 
         $scope.push = function(){
-            Gyro.getGyroData($scope);
-          
-           
-
+            Compass.getCompassData($scope);
         }
 
         $scope.view = function(){
@@ -17,14 +14,12 @@ var gyroModule = angular.module('GyroControllers',['ngCordova'])
         }
 
         $scope.stop = function($scope){
-         Gyro.stopGyro();
+         Compass.stopCompass();
         }
 
 });
 
-
-
-gyroModule.factory('Gyro',function($cordovaDeviceOrientation,cordovaReady,$ionicPlatform){
+gyroModule.factory('Compass',function($cordovaDeviceOrientation,cordovaReady,$ionicPlatform){
 
 
  var arr = [];
@@ -35,13 +30,19 @@ gyroModule.factory('Gyro',function($cordovaDeviceOrientation,cordovaReady,$ionic
 
 
 return{
-    getGyroData: cordovaReady(function($scope){
+    getCompassData: cordovaReady(function($scope){
 
     
 
         // Update compass every 3 seconds
         var options = { frequency: 1000 };
 
+        
+        window.addEventListener('deviceorientation', function(event) {
+          obj.gyroAlpha = event.alpha;
+          obj.gyroBeta = event.beta;
+          obj.gyroGamma = event.gamma;
+        });
         watchID = navigator.compass.watchHeading(onSuccess, onError, options);
     
 
@@ -58,7 +59,7 @@ return{
     //
     function onSuccess(heading) {
         obj.magneticHeading = heading.magneticHeading;
-        obj.timeStamp = heading.timeStamp;
+        obj.timestamp = heading.timestamp;
         arr.push(JSON.stringify(obj));
         $scope.testvalue = arr;
     }
@@ -69,27 +70,9 @@ return{
         alert('Compass error: ' + compassError.code);
     }
 
-    // function onSuccess(heading) {
-    //     obj.magneticHeading = heading.magneticHeading;
-    //     obj.timeStamp = heading.timeStamp;
-    //     arr.push(JSON.stringify(obj));
-    //     $scope.testvalue = arr;
-    // };
+      }),
 
-    // function onError(compassError) {
-    //     alert('Compass error: ' + compassError.code);
-    // };
-
-    // var options = {
-    //     frequency: 1000
-    // }; // Update every 3 seconds
-
-    // var watchID = navigator.compass.watchHeading(onSuccess, onError, options);
-
-      }
-      ),
-
-    stopGyro: cordovaReady(function(){
+    stopCompass: cordovaReady(function(){
       if (watchID) {
             navigator.compass.clearWatch(watchID);
             watchID = null;
