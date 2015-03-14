@@ -7,17 +7,17 @@ DataCont.controller('MyController', function MyController($scope)
 	
 	var array = [
 	{
-		"gyroAlpha":123,
-		"gyroBeta":123,
-		"gyroGamma":123,
-		"timeStamp" : .001,
+		gyroAlpha:2,
+		gyroBeta:26,
+		gyroGamma:1,
+		timeStamp : .001,
 		magneticHeading: 45.90	
 	},
 	{	
-		"gyroAlpha":123,
-		"gyroBeta":123,
-		"gyroGamma":123, 
-		"timeStamp" : .002, 
+		gyroAlpha:2,
+		gyroBeta:20,
+		gyroGamma:1, 
+		timeStamp : .002, 
 		magneticHeading: 1.90
 	}];
 myFunction(array);
@@ -44,32 +44,32 @@ function myFunction(arr){
 		beta = arr[i].gyroBeta;
 		gamma = arr[i].gyroGamma;
 		
-		console.log(arr[i].magneticHeading);
+		//console.log(arr[i].magneticHeading);
 		
 		if (direction >= 337.6 && direction <= 22.5) {
-			document.write("Direction: North, timeStamp: </t>" +tStamp +"Angle-Alpha: " + alpha + "Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+ "Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
+			console.log("Direction: North, timeStamp: " +tStamp +" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+ "Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
 		
 		else if (direction >= 22.6 && direction <= 67.5)	{
-			document.write("Direction: North-East, timeStamp: "+"/t" + tStamp+" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+"Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
+			console.log("Direction: North-East, timeStamp: "+"/t" + tStamp+" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+" Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
 		else if (direction >= 67.6 && direction <= 112.5) {
-			document.write("Direction: East, timeStamp: </a>" + tStamp+"Angle-Alpha: " + alpha + "Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+"Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
+			console.log("Direction: East, timeStamp: " + tStamp+" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+" Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
 		else if (direction >= 112.6 && direction <= 157.5) {
-			document.write("Direction: South-East, timeStamp: </a>" +tStamp +"Angle-Alpha: " + alpha + "Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+"Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
+			console.log("Direction: South-East, timeStamp: " +tStamp +" Angle-Alpha: " + alpha + "Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+" Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
 		else if (direction >= 157.6 && direction <= 202.5) {
-			document.write("Direction: South, timeStamp: </a>" + tStamp+"Angle-Alpha: " + alpha + "Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+"Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
+			console.log("Direction: South, timeStamp: " + tStamp+" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+" Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
 		else if (direction >= 202.6 && direction <= 247.5) {
-			document.write("Direction: South-West, timeStamp: " + tStamp +"Angle-Alpha: " + alpha + "Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+'</a><br>')
+			console.log("Direction: South-West, timeStamp: " + tStamp +" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+" Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
 		else if (direction >= 247.6 && direction <= 292.5) {
-			document.write("Direction: West, timeStamp: " + tStamp +"Angle-Alpha: " + alpha + "Angle-Beta: "+beta+ "Angle-Gamma: " +gamma+"Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
+			console.log("Direction: West, timeStamp: " + tStamp +" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+" Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
 		else  {
-			document.write("Direction: West, timeStamp: " +tStamp+" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+"Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
+			console.log("Direction: West, timeStamp: " +tStamp+" Angle-Alpha: " + alpha + " Angle-Beta: "+beta+ " Angle-Gamma: " +gamma+" Distance Travelled :"+distTrav(alpha,beta,gamma)+'</a><br>')
 		}
     }
 	
