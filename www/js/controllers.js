@@ -131,3 +131,20 @@ gyroModule.factory('cordovaReady', function() {
 });
 
 
+gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader){
+  $scope.view = function(){
+    GyroReader.view();
+  }
+});
+
+gyroModule.factory("GyroReader",function(cordovaReady,$cordovaFile){
+  return{
+    view: cordovaReady(function(){
+      $cordovaFile.readAsText("gyroData.txt")
+      .then(function(success){
+        window.alert(success);
+      },function(error){});
+    })
+    
+  }
+});
