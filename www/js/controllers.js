@@ -134,17 +134,26 @@ gyroModule.factory('cordovaReady', function() {
 gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader){
   $scope.view = function(){
     GyroReader.view();
+    
+  }
+  $scope.viewFinal = function(){
+    GyroReader.viewfinalz();
   }
 });
 
 gyroModule.factory("GyroReader",function(cordovaReady,$cordovaFile){
+  var finalData = "";
   return{
     view: cordovaReady(function(){
       $cordovaFile.readAsText("gyroData.txt")
       .then(function(success){
-        window.alert(success);
+        finalData = finalData.concat(success);
       },function(error){});
-    })
+    }),
+
+    viewfinalz: function(){
+      window.alert(finalData);
+    }
     
   }
 });
