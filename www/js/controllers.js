@@ -15,7 +15,7 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 
         $scope.stop = function(){
          Compass.stopCompass();
-         // $cordovaFile.writeFile("gyroData.json",JSON.stringify($scope.arr),false)
+         // $cordovaFile.writeFile("gyroData.txt",JSON.stringify($scope.arr),false)
          //  .then(function(success){
          //    window.alert("done uy");
          //  },function(error){
@@ -33,7 +33,7 @@ gyroModule.factory('Compass',function($cordovaDeviceOrientation,cordovaReady,$co
  var obj = new Object();
  var watchID = null;
  var count = 0;
- var limit =  5;
+ var limit =  10;
 
 
 return{
@@ -42,14 +42,14 @@ return{
     
 
         // Update compass every 3 seconds
-        var options = { frequency: 300 };
+        var options = { frequency: 100 };
 
         
-        // window.addEventListener('deviceorientation', function(event) {
-        //   obj.gyroAlpha = event.alpha;
-        //   obj.gyroBeta = event.beta;
-        //   obj.gyroGamma = event.gamma;
-        // });
+        window.addEventListener('deviceorientation', function(event) {
+          obj.gyroAlpha = event.alpha;
+          obj.gyroBeta = event.beta;
+          obj.gyroGamma = event.gamma;
+        });
         watchID = navigator.compass.watchHeading(onSuccess, onError, options);
 
 
@@ -63,17 +63,27 @@ return{
         obj = null;
         obj = new Object();
         count = count + 1;
+        
       }
       else{
-        $cordovaFile.writeFile("gyroData.json",JSON.stringify(arr),false)
-          .then(function(success){
-            window.alert("done uy");
-          },function(error){
-            window.alert("wala uy");
-          });
+          // $cordovaFile.writeFile("gyroData.txt",JSON.stringify(arr),{append:false})
+          // .then(function(success){
+          //   window.alert("done");
+          //   count = 0;
+          //   arr = []; 
+          // },function(error){
+          //   window.alert("wala");
+          // });
+          var json = JSON.parse(window.localStorage['jsonData'] || '[]');
+          var concatData = json.concat(arr);
 
-        count = 0;
-        arr = [];
+          window.localStorage['jsonData'] = JSON.stringify(concatData);
+          count = 0;
+          arr = [];
+
+
+
+        
       }
 
         
@@ -90,7 +100,7 @@ return{
       if (watchID) {
             navigator.compass.clearWatch(watchID);
             watchID = null;
-            window.alert("stopped na jd");
+            window.alert("stopped");
         }
         else{
           window.alert("haaaaa");
@@ -143,11 +153,12 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
   return{
     view: function($scope){
-      $cordovaFile.readAsText("gyroData.json")
-      .then(function(success){
-        $scope.test = JSON.parse(success);
-        alert(JSON.parse(success));
-      },function(error){});
+      // $cordovaFile.readAsText("gyroData.txt")
+      // .then(function(success){
+      //   $scope.test = JSON.parse(success);
+      //   alert(JSON.parse(success));
+      // },function(error){});
+      $scope.test = JSON.parse(window.localStorage['jsonData'] || '[]');
     }
     
   }
