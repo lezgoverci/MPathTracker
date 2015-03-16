@@ -60,7 +60,7 @@ return{
       if(count <= limit){
         obj.magneticHeading = heading.magneticHeading;
         obj.timestamp = heading.timestamp;
-        arr.push(JSON.stringify(obj));
+        arr.push(obj);
         count = count + 1;
       }
       else{
@@ -132,27 +132,20 @@ gyroModule.factory('cordovaReady', function() {
 
 
 gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader){
-  $scope.view = function(){
-    GyroReader.view();
+
+    GyroReader.view($scope);
     
-  }
-  $scope.viewFinal = function(){
-    GyroReader.viewfinalz();
-  }
+
 });
 
-gyroModule.factory("GyroReader",function(cordovaReady,$cordovaFile){
-  var finalData = "";
+gyroModule.factory("GyroReader",function($cordovaFile){
+
   return{
-    view: cordovaReady(function(){
+    view: function($scope){
       $cordovaFile.readAsText("gyroData.txt")
       .then(function(success){
-        finalData = finalData.concat(success);
+        $scope.test = JSON.parse(success);
       },function(error){});
-    }),
-
-    viewfinalz: function(){
-      window.alert(finalData);
     }
     
   }

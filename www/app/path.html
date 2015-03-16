@@ -1,22 +1,9 @@
-<ion-view title="Path track">
+<ion-view title="Path track" ng-controller="AnalyzerController">
     <ion-content padding="true" class="has-header has-footer">
-        <div>
-            <p>**Shows the path being tracked in list form.</p>
-        </div>
-        <ion-list>
-            <ion-item>Walk 5 meters straight</ion-item>
-            <ion-item>Turn right</ion-item>
-            <ion-item>Walk 3 meters straight</ion-item>
+        <ion-list ng-repeat="t in test">
+            <ion-item>{{t.magneticHeading}}</ion-item>
+
         </ion-list>
-        <ion-list>
-            <ion-item>Turn left</ion-item>
-            <ion-item>.....</ion-item>
-            <ion-item>.....</ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>....</ion-item>
-            <ion-item>....</ion-item>
-            <ion-item>Item 3</ion-item>
-        </ion-list>
+
     </ion-content>
 </ion-view>
