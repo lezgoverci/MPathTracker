@@ -15,7 +15,7 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 
         $scope.stop = function(){
          Compass.stopCompass();
-         // $cordovaFile.writeFile("gyroData.txt",JSON.stringify($scope.arr),false)
+         // $cordovaFile.writeFile("gyroData.json",JSON.stringify($scope.arr),false)
          //  .then(function(success){
          //    window.alert("done uy");
          //  },function(error){
@@ -29,30 +29,29 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 gyroModule.factory('Compass',function($cordovaDeviceOrientation,cordovaReady,$cordovaFile){
 
 
- var arr = [];
+  var arr = [];
  var obj = new Object();
- var id = null;
  var watchID = null;
  var count = 0;
  var limit =  5;
 
 
 return{
-    getCompassData: function($scope){
+    getCompassData: cordovaReady(function($scope){
 
     
 
         // Update compass every 3 seconds
-        var options = { frequency: 1000 };
+        var options = { frequency: 300 };
 
         
-        window.addEventListener('deviceorientation', function(event) {
-          obj.gyroAlpha = event.alpha;
-          obj.gyroBeta = event.beta;
-          obj.gyroGamma = event.gamma;
-        });
+        // window.addEventListener('deviceorientation', function(event) {
+        //   obj.gyroAlpha = event.alpha;
+        //   obj.gyroBeta = event.beta;
+        //   obj.gyroGamma = event.gamma;
+        // });
         watchID = navigator.compass.watchHeading(onSuccess, onError, options);
-    
+
 
     // onSuccess: Get the current heading
     //
@@ -61,10 +60,12 @@ return{
         obj.magneticHeading = heading.magneticHeading;
         obj.timestamp = heading.timestamp;
         arr.push(obj);
+        obj = null;
+        obj = new Object();
         count = count + 1;
       }
       else{
-        $cordovaFile.writeFile("gyroData.txt",JSON.stringify(arr),false)
+        $cordovaFile.writeFile("gyroData.json",JSON.stringify(arr),false)
           .then(function(success){
             window.alert("done uy");
           },function(error){
@@ -72,18 +73,18 @@ return{
           });
 
         count = 0;
-        $scope.arr = [];
+        arr = [];
       }
+
         
     }
-
     // onError: Failed to get the heading
     //
     function onError(compassError) {
         alert('Compass error: ' + compassError.code);
     }
 
-      },
+      }),
 
     stopCompass: cordovaReady(function(){
       if (watchID) {
@@ -142,9 +143,10 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
   return{
     view: function($scope){
-      $cordovaFile.readAsText("gyroData.txt")
+      $cordovaFile.readAsText("gyroData.json")
       .then(function(success){
         $scope.test = JSON.parse(success);
+        alert(JSON.parse(success));
       },function(error){});
     }
     
