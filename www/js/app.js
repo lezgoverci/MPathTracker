@@ -33,11 +33,13 @@ angular.module("trackerApp", ['ngCordova','ionic','GyroModule','DataCont'])
     .state('test',{
       url: '/test',
       templateUrl: 'app/test.html',
+	  controller: 'MyController'
     })
     
     .state('home', {
       url: '/home',
       templateUrl: 'app/home.html'
+	  //controller: 'MyController'
 
     })
     
