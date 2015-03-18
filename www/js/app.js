@@ -6,7 +6,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module("trackerApp", ['ngCordova','ionic','GyroModule'])
+angular.module("trackerApp", ['ngCordova','ionic','GyroModule','DataCont', 'findStart'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -33,11 +33,13 @@ angular.module("trackerApp", ['ngCordova','ionic','GyroModule'])
     .state('test',{
       url: '/test',
       templateUrl: 'app/test.html',
+	  controller: 'MyController'
     })
     
     .state('home', {
       url: '/home',
       templateUrl: 'app/home.html'
+	  //controller: 'MyController'
 
     })
     
@@ -53,7 +55,8 @@ angular.module("trackerApp", ['ngCordova','ionic','GyroModule'])
     
     .state('path', {
       url: '/path',
-      templateUrl: 'app/path.html'
+      templateUrl: 'app/path.html',
+	  controller: 'findStartController'
     })
     ;
 

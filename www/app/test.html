@@ -1,8 +1,15 @@
-<ion-view ng-controller="GyroReadingsController" >
+<ion-view >
   <ion-content>
-  		<button class="button" ng-click="startread()">
+  		<button class="button" ng-click="calculateData()">
   		  click me
   		</button>
-  		<span>{{pft}}</span>
+		<br>
+  		name : {{magneticHeading}} {{mydata}}
+		<ul>
+			<li ng-repeat="data in mydata">
+				<p>{{data.magneticHeading}}</p>
+			
+			</li>
+		</ul>
   </ion-content>
 </ion-view>

@@ -1,10 +1,24 @@
 <ion-view title="Path track" ng-controller="AnalyzerController">
-    <ion-content padding="true" class="has-header has-footer">
-        <!-- <ion-list ng-repeat="t in test">
-            <ion-item>{{t.gyroAlpha}}</ion-item>
 
-        </ion-list> -->
-        {{test}}
+    <ion-content padding="true" class="has-header has-footer" >
+		<div class="list card" ng-repeat="items in data">
+
+		  <a href="#" class="item item-icon-left">
+			<i class="icon ion-navigate"></i>
+			{{items.d}}
+		  </a>
+
+		  <a href="#" class="item item-icon-left">
+			<i class="icon ion-compass"></i>
+			{{items.h}}
+		  </a>
+
+		  <a href="#" class="item item-icon-left">
+			<i class="icon ion-clock"></i>
+			{{items.t}}
+		  </a>
+
+		</div>
 
     </ion-content>
 </ion-view>
