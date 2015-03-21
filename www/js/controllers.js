@@ -149,6 +149,10 @@ gyroModule.factory('cordovaReady', function() {
 gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader){
 
     GyroReader.view();
+
+    $scope.writeFiles = function(){
+      GyroReader.test();
+    }
     
 
 });
@@ -158,26 +162,11 @@ gyroModule.factory("GyroReader",function($cordovaFile){
   return{
     test: function($scope){
 
-      // $scope.test = JSON.parse(window.localStorage['jsonData'] || '[]');
-      var json = JSON.parse(window.localStorage['jsonData']);
-      var alpha = [];
-      var beta = [];
-      var gamma = [];
-      var heading = [];
-      var time = [];
-      for(i=0;i<json.length;i++){
-        alpha.push(json[i].a);
-        beta.push(json[i].b);
-        gamma.push(json[i].g);
-        heading.push(json[i].h);
-        time.push(json[i].t);
-      }
 
-      $cordovaFile.writeFile("alpha.txt",JSON.stringify(alpha),false);
-      $cordovaFile.writeFile("beta.txt",JSON.stringify(beta),false);
-      $cordovaFile.writeFile("gamma.txt",JSON.stringify(gamma),false);
-      $cordovaFile.writeFile("heading.txt",JSON.stringify(heading),false);
-      $cordovaFile.writeFile("time.txt",JSON.stringify(time),false);
+
+      $cordovaFile.writeFile("beta.txt",window.localStorage['jsonBeta'],false);
+
+      $cordovaFile.writeFile("heading.txt",window.localStorage['jsonHeading'],false);
 
 
     },
@@ -198,12 +187,22 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
 
       var stepCountBeta = countSteps(aveBeta,meanBeta);
+      var finalData = findPath(slicedHeading);
       alert("steps beta : " + stepCountBeta);
       alert(JSON.parse(window.localStorage['allMax']).length);
-      alert(window.localStorage['allMax']);
+      alert(JSON.parse(window.localStorage['allMax']));
+      alert(JSON.stringify(finalData));
 
 
+      function findPath(heading){
+        var result = [];
+        var maxIndexes = JSON.parse(window.localStorage['allMax']);
+        for(i=0; i< maxIndexes.length;i++){
+          result.push(heading[maxIndexes[i]]);
+        }
+        return result;
 
+      }
 
 
 
@@ -220,23 +219,21 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       function countSteps(arr,mean){
         var count = 0;
         var found = false;
-        var maxIndex = 0;
-        var allMax = [];
+        var maxInd = [];
+        var temp = [];
         for(i = 0; i < arr.length; i++){
-          if((arr[i] >= mean) || (arr[i-1] >= mean) || (arr[i+1]) >= mean ){
+          if((arr[i] >= mean) || (arr[i-1] >= mean) || (arr[i+1] >= mean)){
             if(found == false){
                count = count + 1;
             }
             found = true;
-          }
-          else if((arr[i] > arr[ i + 1 ]) && (arr[i] > arr[maxIndex]) ){
-            maxIndex = i;
+            temp.push(i);
           }
           else{
             if(found == true){
                 
-                maxIndex = i;
-                allMax.push(maxIndex);
+                maxInd.push(temp[Math.floor(temp.length/2)]);
+                temp = [];
                found = false;
             }
            
@@ -244,7 +241,7 @@ gyroModule.factory("GyroReader",function($cordovaFile){
           }
         }
 
-        window.localStorage['allMax'] = JSON.stringify(allMax);
+        window.localStorage['allMax'] = JSON.stringify(maxInd);
         return count;
       }
 
