@@ -63,7 +63,7 @@ return{
 
         beta = null;
         heading = null;
-        alpha - null;
+
         count = count + 1;
         
       }
@@ -199,6 +199,8 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
       var stepCountBeta = countSteps(aveBeta,meanBeta);
       alert("steps beta : " + stepCountBeta);
+      alert(JSON.parse(window.localStorage['allMax']).length);
+      alert(window.localStorage['allMax']);
 
 
 
@@ -218,6 +220,8 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       function countSteps(arr,mean){
         var count = 0;
         var found = false;
+        var maxIndex = 0;
+        var allMax = [];
         for(i = 0; i < arr.length; i++){
           if((arr[i] >= mean) || (arr[i-1] >= mean) || (arr[i+1]) >= mean ){
             if(found == false){
@@ -225,12 +229,22 @@ gyroModule.factory("GyroReader",function($cordovaFile){
             }
             found = true;
           }
+          else if((arr[i] > arr[ i + 1 ]) && (arr[i] > arr[maxIndex]) ){
+            maxIndex = i;
+          }
           else{
-            found = false;
+            if(found == true){
+                
+                maxIndex = i;
+                allMax.push(maxIndex);
+               found = false;
+            }
+           
            
           }
         }
 
+        window.localStorage['allMax'] = JSON.stringify(allMax);
         return count;
       }
 
