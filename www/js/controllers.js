@@ -142,6 +142,11 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
 
     $scope.finalData = inverted;
 
+    var compassWatchId = navigator.compass.watchHeading(onSuccess, onError, options);
+
+    function onSuccess(success){
+      $scope.compass = Math.floor(success.magneticHeading);
+    }
 
 
      
