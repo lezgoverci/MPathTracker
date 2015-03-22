@@ -1,15 +1,15 @@
 <ion-view title="Mobile Tracker">
     <ion-content padding="true" class="has-header has-footer" ng-controller="MyController">
         <div style="line-height: 250px; border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center; background-color: rgb(255, 255, 255);">
-            <i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>
+			<img src = "images/direction-512.png" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"	>
+            <!--<i class="icon ion-image" style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;"></i>-->
         </div>
         <div class="spacer" style="height: 100px;"></div>
 
-        <a href="#/recording" class="button button-stable button-block" >Start Record</a>
-        <a href="#/test" class="button button-stable button-block" >Stop Record</a>
+        <a href="#/recording" class="button button-stable button-block" >Start Path</a>
+        <a href="#/test" class="button button-stable button-block" >About</a>
 		
-		<button class="button" ng-click="calculateData()">calc</button>
         <div class="button-bar"></div>
-		heading: {{magneticHeading}}
+		
     </ion-content>
 </ion-view>
