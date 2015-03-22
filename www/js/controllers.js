@@ -136,7 +136,14 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     var data = JSON.parse(window.localStorage['allMax']);
 
     HeadingConverter.convert(data);
-    $scope.finalData = JSON.parse(window.localStorage['converted']);
+    var converted = JSON.parse(window.localStorage['converted']);
+    HeadingConverter.invert(converted);
+    var inverted = JSON.parse(window.localStorage['inverted']);
+
+    $scope.finalData = inverted;
+
+
+
      
 
 
@@ -270,6 +277,26 @@ gyroModule.factory("HeadingConverter",function(){
 
       //   return JSON.stringify(temp);
       // }
+    },
+    invert: function(arr){
+
+      alert(JSON.stringify(arr));
+
+      for(var i = 0;i<arr.length;i++){
+       
+        if(arr[i].d < 180){
+          arr[i].d = 360 - arr[i].d;
+        }
+        else{
+          arr[i].d = arr[i].d - 180;
+        }
+       
+      }
+
+      window.localStorage['inverted'] = JSON.stringify(arr.reverse());
+      alert(JSON.stringify(arr));
+
+
     }
   }
 
