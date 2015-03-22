@@ -130,14 +130,148 @@ gyroModule.factory('cordovaReady', function() {
 });
 
 
-gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader){
+gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader,HeadingConverter){
 
     GyroReader.view();
-    $scope.finalData = JSON.parse(window.localStorage['finalData']);
+    var data = JSON.parse(window.localStorage['allMax']);
+
+    HeadingConverter.convert(data);
+    $scope.finalData = JSON.parse(window.localStorage['converted']);
+     
+
+
+
 
     // $scope.writeFiles = function(){
     //   GyroReader.test();
     // }    
+
+});
+
+gyroModule.factory("HeadingConverter",function(){
+
+  return{
+    convert: function(arr){
+      var test = mergeHeadings(arr);
+      var test2 = analyzeMergeHeadings(test); 
+      window.localStorage['converted'] = JSON.stringify(test2);
+
+
+
+     
+
+
+
+      function analyzeMergeHeadings(arr){
+        var array = arr;
+        var result = [];
+        var size = 0;
+        var ave = 0;
+
+        console.log(JSON.stringify(array));
+
+        for(i=0;i<array.length;i++){
+
+          var obj = new Object();
+          // obj.s = array[i].length;
+          // obj.d = array[i];
+          result.push({s:array[i].length,d:Math.floor(aveHeading(array[i]))});
+          
+         
+
+        }
+
+
+        return result;
+      }
+
+      function mergeHeadings(arr){
+
+        var result = [];
+        var current = arr[0];
+        var tempHeading = [];
+
+        for(i=0;i<arr.length;i++){
+          if((arr[i] >= current - 10)&&(arr[i] <= current + 10)){
+            tempHeading.push(arr[i]);
+            
+          }
+          else{
+            current = arr[i];  
+            result.push(tempHeading);            
+            tempHeading = [];
+                   
+            tempHeading.push(current);
+          }
+
+          if(i == (arr.length -1)){
+              result.push(tempHeading);
+            }
+        }
+        
+        return result;
+      }
+
+      function aveHeading(arr){
+      
+         var sum = 0;
+
+         for(var i = 0 ; i  < arr.length ;i++){
+           sum += arr[i];
+           
+
+        }
+
+        return sum/arr.length;
+      }
+      
+      
+      // function convertHeadings(arr,factor){
+      //   var temp = [];
+      //   for(i=0;i<arr.length;i++){
+      //     if((arr[i] >= 338 + factor) && (arr[i] < 23 + factor)){
+      //       temp.push({h:arr[i],d:"North"});
+      //     }
+      //     else if((arr[i] >= 23 + factor) && (arr[i] < 68 + factor)){
+      //       temp.push({h:arr[i],d:"North East"});
+      //     }
+      //     else if((arr[i] >= 68 + factor) && (arr[i] < 113 + factor)){
+      //       temp.push({h:arr[i],d:"East"});
+      //     }
+      //     else if((arr[i] >= 113 + factor) && (arr[i] < 158 + factor)){
+      //       temp.push({h:arr[i],d:"South East"});
+      //     }
+      //     else if((arr[i] >= 158 + factor) && (arr[i] < 203 + factor)){
+      //       temp.push({h:arr[i],d:"South"});
+      //     }
+      //     else if((arr[i] >= 203 + factor) && (arr[i] < 248 + factor)){
+      //       temp.push({h:arr[i],d:"South West"});
+      //     }
+      //     else if((arr[i] >= 248 + factor) && (arr[i] < 293 + factor)){
+      //       temp.push({h:arr[i],d:"West"});
+      //     }
+      //     else{
+      //       temp.push({h:arr[i],d:"North West"});
+      //     }
+      //     // if((arr[i] >= 315) && (arr[i] < 45)){
+      //     //   temp.push({h:arr[i],d:"North"});
+      //     // }
+      //     // else if((arr[i] >= 45) && (arr[i] < 135)){
+      //     //   temp.push({h:arr[i],d:"East"});
+      //     // }
+      //     // else if((arr[i] >= 135) && (arr[i] < 225)){
+      //     //   temp.push({h:arr[i],d:"South"});
+      //     // }
+      //     // else {
+      //     //   temp.push({h:arr[i],d:"West"});
+      //     // }
+
+      //   }
+
+      //   return JSON.stringify(temp);
+      // }
+    }
+  }
 
 });
 
@@ -162,27 +296,43 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
 
       var aveBeta = filter(5,slicedBeta);
+      var aveHeading = filterGyro(slicedHeading,2);
       var meanBeta = mean(aveBeta);
 
 
-      var stepCountBeta = countSteps(aveBeta,meanBeta);
-      var finalData = findPath(slicedHeading);
-      window.localStorage['finalData'] = JSON.stringify(finalData);
+      var stepCountBeta = countSteps(aveBeta,meanBeta,aveHeading);
+      alert(stepCountBeta);
+      var allMax = JSON.parse(window.localStorage['allMax']);
+      alert(allMax.length);
+
+
+      window.localStorage['finalData'] = window.localStorage['allMax'];
       // alert("steps beta : " + stepCountBeta);
       // alert(JSON.parse(window.localStorage['allMax']).length);
       // alert(JSON.parse(window.localStorage['allMax']));
       // alert(JSON.parse(window.localStorage['finalData']));
 
 
-      function findPath(heading){
-        var result = [];
-        var maxIndexes = JSON.parse(window.localStorage['allMax']);
-        for(i=0; i< maxIndexes.length;i++){
-          result.push(heading[maxIndexes[i]]);
+      function filterGyro(arr,factor){
+        for(i=factor;i<arr.length-factor;i++){
+          if((arr[i] < arr[i-factor]) && (arr[i] < arr[i+factor])){
+            arr[i] = arr[i-factor];
+          }
         }
-        return result;
 
+        return arr;
       }
+
+
+      // function findPath(heading){
+      //   var result = [];
+      //   var maxIndexes = JSON.parse(window.localStorage['allMax']);
+      //   for(i=0; i< maxIndexes.length;i++){
+      //     result.push(heading[maxIndexes[i]]);
+      //   }
+      //   return result;
+
+      // }
 
 
 
@@ -196,10 +346,10 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       }
 
 
-      function countSteps(arr,mean){
+      function countSteps(arr,mean,heading){
         var count = 0;
         var found = false;
-        var maxInd = [];
+        var max = [];
         var temp = [];
         for(i = 0; i < arr.length; i++){
           if((arr[i] >= mean) || (arr[i-1] >= mean) || (arr[i+1] >= mean)){
@@ -212,14 +362,14 @@ gyroModule.factory("GyroReader",function($cordovaFile){
           else{
             if(found == true){
                 
-                maxInd.push(temp[Math.floor(temp.length/2)]);
+                max.push(heading[temp[Math.floor(temp.length/2)]]);
                 temp = [];
                found = false;
             }
           }
         }
 
-        window.localStorage['allMax'] = JSON.stringify(maxInd);
+        window.localStorage['allMax'] = JSON.stringify(max);
         return count;
       }
 
@@ -252,10 +402,10 @@ gyroModule.factory("GyroReader",function($cordovaFile){
   }
 });
 
-gyroModule.controller("ViewGyroController",function($scope){
-  $scope.finalData = JSON.parse(window.localStorage['finalData']);
-  alert($scope.finalData );
+// gyroModule.controller("ViewGyroController",function($scope){
+  
+//   alert($scope.finalData );
 
   
 
-});
+// });
