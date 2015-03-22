@@ -130,7 +130,7 @@ gyroModule.factory('cordovaReady', function() {
 });
 
 
-gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader,HeadingConverter){
+gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader,HeadingConverter, CompassGuide){
 
     GyroReader.view();
     var data = JSON.parse(window.localStorage['allMax']);
@@ -141,12 +141,11 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     var inverted = JSON.parse(window.localStorage['inverted']);
 
     $scope.finalData = inverted;
-
-    var compassWatchId = navigator.compass.watchHeading(onSuccess, onError, options);
-
-    function onSuccess(success){
-      $scope.compass = Math.floor(success.magneticHeading);
+    $scope.fireCompass = function(){
+      CompassGuide.view($scope);
     }
+    
+
 
 
      
@@ -158,6 +157,28 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     //   GyroReader.test();
     // }    
 
+});
+
+gyroModule.factory("CompassGuide",function(cordovaReady,$cordovaDeviceOrientation){
+
+  var watchID = null;
+  return{
+    view: cordovaReady(function($scope){
+
+       
+        watchID = navigator.compass.watchHeading(onSuccess, onError);
+       
+      
+
+      function onSuccess(heading){
+        $scope.mycompass = heading.magneticHeading;
+      }
+
+      function onError(compassError) {
+        alert('Compass error: ' + compassError.code);
+      }
+    })
+  }
 });
 
 gyroModule.factory("HeadingConverter",function(){
@@ -204,7 +225,7 @@ gyroModule.factory("HeadingConverter",function(){
         var tempHeading = [];
 
         for(i=0;i<arr.length;i++){
-          if((arr[i] >= current - 10)&&(arr[i] <= current + 10)){
+          if((arr[i] >= current - 20)&&(arr[i] <= current + 20)){
             tempHeading.push(arr[i]);
             
           }
@@ -288,12 +309,13 @@ gyroModule.factory("HeadingConverter",function(){
       alert(JSON.stringify(arr));
 
       for(var i = 0;i<arr.length;i++){
-       
-        if(arr[i].d < 180){
-          arr[i].d = 360 - arr[i].d;
+        var res = arr[i].d - 180;
+        
+        if(res < 0){
+          arr[i].d = 360 - res;
         }
         else{
-          arr[i].d = arr[i].d - 180;
+          arr[i].d = res;
         }
        
       }
@@ -319,8 +341,8 @@ gyroModule.factory("GyroReader",function($cordovaFile){
     view: function(){
 
 
-      var beta = JSON.parse(window.localStorage['jsonBeta']);
-      var heading = JSON.parse(window.localStorage['jsonHeading']);
+      var beta = JSON.parse(window.localStorage['jsonBeta'] || '[]');
+      var heading = JSON.parse(window.localStorage['jsonHeading'] || '[]');
 
 
       var slicedBeta = beta.slice(50,beta.length-50);

@@ -1,7 +1,8 @@
 <ion-view title="Path track" ng-controller="AnalyzerController">
 
     <ion-content padding="true" class="has-header has-footer">
-    <div>compass: {{compass}}</div>
+    <a href="" class="button button-stable button-block" ng-click="fireCompass()">Fire</a>
+    <div>compass: {{mycompass}}</div>
     <div class="card" ng-repeat="data in finalData">
       <div class="item item-text-wrap">
         {{data.s * 2 }} steps {{data.d }}
