@@ -15,12 +15,6 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 
         $scope.stop = function(){
          Compass.stopCompass();
-         // $cordovaFile.writeFile("gyroData.txt",JSON.stringify($scope.arr),false)
-         //  .then(function(success){
-         //    window.alert("done uy");
-         //  },function(error){
-         //    window.alert("wala uy");
-         //  });
         }
 
 
@@ -85,9 +79,6 @@ return{
 
         arrBeta = [];
         arrHeading = [];
-
-
-        
       }
 
         
@@ -104,10 +95,10 @@ return{
       if (watchID) {
             navigator.compass.clearWatch(watchID);
             watchID = null;
-            window.alert("stopped");
+            // window.alert("stopped");
         }
         else{
-          window.alert("haaaaa");
+          // window.alert("haaaaa");
         }
       
 
@@ -115,13 +106,6 @@ return{
   }
 });
       
-    
-
-  
-
-
-
-
 
 gyroModule.factory('cordovaReady', function() {
   return function (fn) {
@@ -149,11 +133,11 @@ gyroModule.factory('cordovaReady', function() {
 gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroReader){
 
     GyroReader.view();
+    $scope.finalData = JSON.parse(window.localStorage['finalData']);
 
-    $scope.writeFiles = function(){
-      GyroReader.test();
-    }
-    
+    // $scope.writeFiles = function(){
+    //   GyroReader.test();
+    // }    
 
 });
 
@@ -161,14 +145,9 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
   return{
     test: function($scope){
-
-
-
       $cordovaFile.writeFile("beta.txt",window.localStorage['jsonBeta'],false);
 
       $cordovaFile.writeFile("heading.txt",window.localStorage['jsonHeading'],false);
-
-
     },
 
     view: function(){
@@ -188,10 +167,11 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
       var stepCountBeta = countSteps(aveBeta,meanBeta);
       var finalData = findPath(slicedHeading);
-      alert("steps beta : " + stepCountBeta);
-      alert(JSON.parse(window.localStorage['allMax']).length);
-      alert(JSON.parse(window.localStorage['allMax']));
-      alert(JSON.stringify(finalData));
+      window.localStorage['finalData'] = JSON.stringify(finalData);
+      // alert("steps beta : " + stepCountBeta);
+      // alert(JSON.parse(window.localStorage['allMax']).length);
+      // alert(JSON.parse(window.localStorage['allMax']));
+      // alert(JSON.parse(window.localStorage['finalData']));
 
 
       function findPath(heading){
@@ -236,57 +216,12 @@ gyroModule.factory("GyroReader",function($cordovaFile){
                 temp = [];
                found = false;
             }
-           
-           
           }
         }
 
         window.localStorage['allMax'] = JSON.stringify(maxInd);
         return count;
       }
-
-
-      // findMaxValues(data);
-
-
-      // function findMaxValues(arr){
-      //   alert(JSON.stringify(clipAndAve(-70,3,arr)));
-      // }
-
-      // function clipAndAve(limit,aveFactor,rawData){
-   
-      //     var res = null;
-      //     var aveData20  = averageBetaValues(20,rawData);
-      //     startIndex = removeStartIndex(limit,aveData20);
-      //     endINdex = removeStartIndex(limit,aveData20.reverse());
-
-      //     aveData3 = averageBetaValues(aveFactor,rawData);
-      //     res = aveData3.slice(startIndex,endINdex);
-      //     return res;
-         
-
-      // }
-
-
-
-
-      // function removeStartIndex(limit,data){
-
-      //   var index = 0;
-      //   var insidePocket = false;
-      //   for(i = 0;i < data.length;i++){
-      //     if((data[i] <= limit - 10) &&  !insidePocket){
-      //       insidePocket = true;
-      //     }
-      //     else if((data[i] >= limit) && insidePocket){
-      //       index = i;
-      //       break;
-      //     }
-      //   }
-
-      //   return index;
-
-      // }
 
 
       function filter(range,arr){
@@ -315,4 +250,12 @@ gyroModule.factory("GyroReader",function($cordovaFile){
     }
     
   }
+});
+
+gyroModule.controller("ViewGyroController",function($scope){
+  $scope.finalData = JSON.parse(window.localStorage['finalData']);
+  alert($scope.finalData );
+
+  
+
 });
