@@ -9,9 +9,6 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
             Compass.getCompassData($scope);
         }
 
-        $scope.view = function(){
-                  
-        }
 
         $scope.stop = function(){
          Compass.stopCompass();
@@ -374,7 +371,7 @@ gyroModule.factory("HeadingConverter",function(){
       }
 
       window.localStorage['inverted'] = JSON.stringify(arr.reverse());
-      alert(JSON.stringify(arr));
+      // alert(JSON.stringify(arr));
 
 
     }
@@ -408,9 +405,9 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
 
       var stepCountBeta = countSteps(aveBeta,meanBeta,aveHeading);
-      alert(stepCountBeta);
+      // alert(stepCountBeta);
       var allMax = JSON.parse(window.localStorage['allMax']);
-      alert(allMax.length);
+      // alert(allMax.length);
 
 
       window.localStorage['finalData'] = window.localStorage['allMax'];
