@@ -137,12 +137,64 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
 
     HeadingConverter.convert(data);
     var converted = JSON.parse(window.localStorage['converted']);
-    HeadingConverter.invert(converted);
-    var inverted = JSON.parse(window.localStorage['inverted']);
+    // HeadingConverter.invert(converted);
+    // var inverted = JSON.parse(window.localStorage['inverted']);
 
-    $scope.finalData = inverted;
-    $scope.fireCompass = function(){
+    $scope.finalData = findDirection(converted).reverse();
+
       CompassGuide.view($scope);
+    
+
+    function findDirection(arr){
+      
+      var range = 11.25;
+      var prev = arr[0].d;
+      var tempPrev = null;
+      for(i = 0; i < arr.length; i++){
+        tempPrev = arr[i].d;
+        // if((prev - range * 2) < 0){
+        //   prev = prev + 180; 
+        // }
+        // else if((prev + range * 2) > 360){
+        //   prev = prev - 360;
+        // }
+        // if(arr[i].d < 0){
+        //   arr[i].d = arr[i].d + 360;
+        // }
+
+        if((arr[i].d >= prev - (range * 1)) && (arr[i].d < prev + (range * 1))){
+          arr[i].d = "N";
+        }
+        else if((arr[i].d >= prev + (range * 1)) && (arr[i].d < prev + (range * 3))){
+          arr[i].d = "NE";
+        }
+        else if((arr[i].d >= prev + (range * 3)) && (arr[i].d < prev + (range * 5))){
+          arr[i].d = "E";
+        }
+        else if((arr[i].d >= prev - (range * 3)) && (arr[i].d < prev - (range * 1))){
+          arr[i].d = "NW";
+        }
+        else if((arr[i].d >= prev - (range * 5)) && (arr[i].d < prev - (range * 3))){
+          arr[i].d = "W";
+        }
+        else if((arr[i].d >= prev - (range * 7)) && (arr[i].d < prev - (range * 5))){
+          arr[i].d = "SW";
+        }
+        else if((arr[i].d >= prev + (range * 5)) && (arr[i].d < prev + (range * 7))){
+          arr[i].d = "SE";
+        }
+        else{
+          arr[i].d = "S";
+        }
+
+        prev = tempPrev;
+
+
+          
+        
+      }
+
+      return arr;
     }
     
 
@@ -223,9 +275,10 @@ gyroModule.factory("HeadingConverter",function(){
         var result = [];
         var current = arr[0];
         var tempHeading = [];
+        var factor = 20;
 
         for(i=0;i<arr.length;i++){
-          if((arr[i] >= current - 20)&&(arr[i] <= current + 20)){
+          if((arr[i] >= current - factor)&&(arr[i] <= current + factor)){
             tempHeading.push(arr[i]);
             
           }
@@ -306,13 +359,13 @@ gyroModule.factory("HeadingConverter",function(){
     },
     invert: function(arr){
 
-      alert(JSON.stringify(arr));
+
 
       for(var i = 0;i<arr.length;i++){
         var res = arr[i].d - 180;
         
         if(res < 0){
-          arr[i].d = 360 - res;
+          arr[i].d = arr[i].d + 180;
         }
         else{
           arr[i].d = res;
