@@ -58,6 +58,18 @@ angular.module("trackerApp", ['ngCordova','ionic','GyroModule','DataCont', 'find
       templateUrl: 'app/path.html',
 	  controller: 'findStartController'
     })
+	
+	.state('instruction', {
+      url: '/instruction',
+      templateUrl: 'app/instruction.html',
+	  //controller: 'findStartController'
+    })
+	
+	.state('about', {
+      url: '/about',
+      templateUrl: 'app/about.html',
+	  //controller: 'findStartController'
+    })
     ;
 
   // if none of the above states are matched, use this as the fallback
