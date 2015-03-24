@@ -136,55 +136,80 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     var converted = JSON.parse(window.localStorage['converted']);
     // HeadingConverter.invert(converted);
     // var inverted = JSON.parse(window.localStorage['inverted']);
+    alert(JSON.stringify(converted));
 
-    $scope.finalData = findDirection(converted).reverse();
+    $scope.finalData = findDirection(converted.reverse());
 
-      CompassGuide.view($scope);
+      window.localStorage['allMax'] = [];
+      window.localStorage['converted'] = [];
+      window.localStorage['inverted'] = [];
+      window.localStorage['jsonBeta'] = [];
+      window.localStorage['jsonHeading'] = [];
     
 
     function findDirection(arr){
       
-      var range = 11.25;
-      var prev = arr[0].d;
-      var tempPrev = null;
+
+      var prev = 0;
       for(i = 0; i < arr.length; i++){
-        tempPrev = arr[i].d;
-        // if((prev - range * 2) < 0){
-        //   prev = prev + 180; 
+
+        var change = arr[i].d - prev; 
+        var prev = arr[i].d;
+
+        // if(((change >= 0) && (change < 22.5 ))||((change >= -360) && (change < -337.5 ))){
+        //   arr[i].d = "N";
         // }
-        // else if((prev + range * 2) > 360){
-        //   prev = prev - 360;
+        // else if(((change >= 22.5) && (change < 67.5 ))||((change >= -337.5) && (change < -292.5 ))){
+        //   arr[i].d = "NE";
         // }
-        // if(arr[i].d < 0){
-        //   arr[i].d = arr[i].d + 360;
+        // else if(((change >= 67.5) && (change < 112.5 ))||((change >= -292.5) && (change < -247.5 ))){
+        //   arr[i].d = "E";
+        // }
+        // else if(((change >= 112.5) && (change < 157.5 ))||((change >= -247.5) && (change < -202.5 ))){
+        //   arr[i].d = "SE";
+        // }
+        // else if(((change >= 157.5) && (change < 202.5 ))||((change >= -202.5) && (change < -157.5 ))){
+        //   arr[i].d = "S";
+        // }
+        // else if(((change >= 202.5) && (change < 247.5 ))||((change >= -157.5) && (change < -112.5 ))){
+        //   arr[i].d = "SW";
+        // }
+        // else if(((change >= 247.5) && (change < 292.5 ))||((change >= -112.5) && (change < -67.5 ))){
+        //   arr[i].d = "W";
+        // }
+        // else if(((change >= 292.5) && (change < 337.5 ))||((change >= -67.5) && (change < -22.5 ))){
+        //   arr[i].d = "NW";
+        // }
+        // else if(((change >= 337.5) && (change < 360 ))||((change >= -22.5) && (change < 0 ))){
+        //   arr[i].d = "N";
         // }
 
-        if((arr[i].d >= prev - (range * 1)) && (arr[i].d < prev + (range * 1))){
+        if(((change >= 0) && (change < 45 ))||((change >= -360) && (change < -315 ))){
           arr[i].d = "N";
         }
-        else if((arr[i].d >= prev + (range * 1)) && (arr[i].d < prev + (range * 3))){
-          arr[i].d = "NE";
-        }
-        else if((arr[i].d >= prev + (range * 3)) && (arr[i].d < prev + (range * 5))){
+
+        else if(((change >= 45) && (change < 135))||((change >= -315) && (change < -225))){
           arr[i].d = "E";
         }
-        else if((arr[i].d >= prev - (range * 3)) && (arr[i].d < prev - (range * 1))){
-          arr[i].d = "NW";
-        }
-        else if((arr[i].d >= prev - (range * 5)) && (arr[i].d < prev - (range * 3))){
-          arr[i].d = "W";
-        }
-        else if((arr[i].d >= prev - (range * 7)) && (arr[i].d < prev - (range * 5))){
-          arr[i].d = "SW";
-        }
-        else if((arr[i].d >= prev + (range * 5)) && (arr[i].d < prev + (range * 7))){
-          arr[i].d = "SE";
-        }
-        else{
+
+        else if(((change >= 135) && (change < 225 ))||((change >= -225) && (change < -135))){
           arr[i].d = "S";
         }
 
-        prev = tempPrev;
+        else if(((change >= 225) && (change < 315 ))||((change >= -135) && (change < -45 ))){
+          arr[i].d = "W";
+        }
+
+        else if(((change >= 315) && (change < 360 ))||((change >= -45) && (change < 0 ))){
+          arr[i].d = "N";
+        }
+
+
+        else{
+
+        }
+
+        
 
 
           
@@ -235,8 +260,11 @@ gyroModule.factory("HeadingConverter",function(){
   return{
     convert: function(arr){
       var test = mergeHeadings(arr);
+      
       var test2 = analyzeMergeHeadings(test); 
+      alert(JSON.stringify(test2));
       window.localStorage['converted'] = JSON.stringify(test2);
+
 
 
 
@@ -272,7 +300,7 @@ gyroModule.factory("HeadingConverter",function(){
         var result = [];
         var current = arr[0];
         var tempHeading = [];
-        var factor = 20;
+        var factor = 1;
 
         for(i=0;i<arr.length;i++){
           if((arr[i] >= current - factor)&&(arr[i] <= current + factor)){
@@ -395,19 +423,18 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       var heading = JSON.parse(window.localStorage['jsonHeading'] || '[]');
 
 
-      var slicedBeta = beta.slice(50,beta.length-50);
-      var slicedHeading = heading.slice(50,heading.length-50);
-
+      var slicedBeta = beta.slice(20,beta.length-20);
+      var slicedHeading = heading.slice(20,heading.length-20);
 
       var aveBeta = filter(5,slicedBeta);
-      var aveHeading = filterGyro(slicedHeading,2);
+      var aveHeading = filter(1,slicedHeading);
       var meanBeta = mean(aveBeta);
 
 
       var stepCountBeta = countSteps(aveBeta,meanBeta,aveHeading);
       // alert(stepCountBeta);
       var allMax = JSON.parse(window.localStorage['allMax']);
-      // alert(allMax.length);
+
 
 
       window.localStorage['finalData'] = window.localStorage['allMax'];
@@ -417,15 +444,15 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       // alert(JSON.parse(window.localStorage['finalData']));
 
 
-      function filterGyro(arr,factor){
-        for(i=factor;i<arr.length-factor;i++){
-          if((arr[i] < arr[i-factor]) && (arr[i] < arr[i+factor])){
-            arr[i] = arr[i-factor];
-          }
-        }
+      // function filterGyro(arr,factor){
+      //   for(i=factor;i<arr.length-factor;i++){
+      //     if((arr[i] < arr[i-factor]) && (arr[i] < arr[i+factor])){
+      //       arr[i] = arr[i-factor];
+      //     }
+      //   }
 
-        return arr;
-      }
+      //   return arr;
+      // }
 
 
       // function findPath(heading){
