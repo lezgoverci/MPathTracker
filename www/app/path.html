@@ -1,9 +1,9 @@
 <ion-view title="Path track" ng-controller="AnalyzerController">
 
     <ion-content padding="true" class="has-header has-footer">
-    <div class="card" ng-repeat="data in finalData">
+    <div class="card" ng-repeat="data in finalData | attachDirImage">
       <div class="item item-text-wrap">
-        {{data.s * 2 }} steps {{data.d }} {{data}} 
+         {{data}} 
       </div>
     </div>
 

@@ -17,6 +17,13 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 
 });
 
+gyroModule.filter("attachDirImage",function(){
+  return function(dat){
+    return "samok";
+   
+  }
+});
+
 gyroModule.factory('Compass',function($cordovaDeviceOrientation,cordovaReady,$cordovaFile){
 
 
