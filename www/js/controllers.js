@@ -151,55 +151,61 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     function findDirection(arr){
       
 
-      var prev = 0;
+      var prev = arr[0].d;
       for(i = 0; i < arr.length; i++){
-
+        arr[i].h = arr[i].d;
+        arr[i].c = change;
         var change = arr[i].d - prev; 
-        var prev = arr[i].d;
+        prev = arr[i].d;
 
-        // if(((change >= 0) && (change < 22.5 ))||((change >= -360) && (change < -337.5 ))){
-        //   arr[i].d = "N";
-        // }
-        // else if(((change >= 22.5) && (change < 67.5 ))||((change >= -337.5) && (change < -292.5 ))){
-        //   arr[i].d = "NE";
-        // }
-        // else if(((change >= 67.5) && (change < 112.5 ))||((change >= -292.5) && (change < -247.5 ))){
-        //   arr[i].d = "E";
-        // }
-        // else if(((change >= 112.5) && (change < 157.5 ))||((change >= -247.5) && (change < -202.5 ))){
-        //   arr[i].d = "SE";
-        // }
-        // else if(((change >= 157.5) && (change < 202.5 ))||((change >= -202.5) && (change < -157.5 ))){
-        //   arr[i].d = "S";
-        // }
-        // else if(((change >= 202.5) && (change < 247.5 ))||((change >= -157.5) && (change < -112.5 ))){
-        //   arr[i].d = "SW";
-        // }
-        // else if(((change >= 247.5) && (change < 292.5 ))||((change >= -112.5) && (change < -67.5 ))){
-        //   arr[i].d = "W";
-        // }
-        // else if(((change >= 292.5) && (change < 337.5 ))||((change >= -67.5) && (change < -22.5 ))){
-        //   arr[i].d = "NW";
-        // }
-        // else if(((change >= 337.5) && (change < 360 ))||((change >= -22.5) && (change < 0 ))){
-        //   arr[i].d = "N";
-        // }
 
-        if(((change >= 0) && (change < 60 ))||((change > -360) && (change <= -300 ))){
+        if(((change >= 0) && (change < 22.5 ))||((change >= -360) && (change < -337.5 ))){
           arr[i].d = "N";
         }
-
-        else if(((change >= 60) && (change < 180))||((change > -300) && (change <= -180))){
+        else if(((change >= 22.5) && (change < 67.5 ))||((change >= -337.5) && (change < -292.5 ))){
+          arr[i].d = "NE";
+        }
+        else if(((change >= 67.5) && (change < 112.5 ))||((change >= -292.5) && (change < -247.5 ))){
           arr[i].d = "E";
         }
-
-        else if(((change >= 180) && (change < 300 ))||((change > -180) && (change <= -60))){
+        else if(((change >= 112.5) && (change < 157.5 ))||((change >= -247.5) && (change < -202.5 ))){
+          arr[i].d = "SE";
+        }
+        else if(((change >= 157.5) && (change < 202.5 ))||((change >= -202.5) && (change < -157.5 ))){
+          arr[i].d = "S";
+        }
+        else if(((change >= 202.5) && (change < 247.5 ))||((change >= -157.5) && (change < -112.5 ))){
+          arr[i].d = "SW";
+        }
+        else if(((change >= 247.5) && (change < 292.5 ))||((change >= -112.5) && (change < -67.5 ))){
           arr[i].d = "W";
         }
-
-        else if(((change >= 300) && (change < 360 ))||((change > -60) && (change <= 0 ))){
+        else if(((change >= 292.5) && (change < 337.5 ))||((change >= -67.5) && (change < -22.5 ))){
+          arr[i].d = "NW";
+        }
+        else if(((change >= 337.5) && (change < 360 ))||((change >= -22.5) && (change < 0 ))){
           arr[i].d = "N";
         }
+        
+        // if(((change >= 0) && (change < 45 ))||((change > -360) && (change <= -315 ))){
+        //   arr[i].d = "N";
+        // }
+
+        // else if(((change >= 45) && (change < 135))||((change > -315) && (change <= -225))){
+        //   arr[i].d = "E";
+        // }
+
+        // else if(((change >= 135) && (change < 225 ))||((change > -225) && (change <= -135))){
+        //   arr[i].d = "S";
+        // }
+
+        // else if(((change >= 225) && (change < 315 ))||((change > -135) && (change <= -45 ))){
+        //   arr[i].d = "W";
+        // }
+
+        // else if(((change >= 315) && (change < 360 ))||((change > -45) && (change <= 0 ))){
+        //   arr[i].d = "N";
+        // }
 
 
         
@@ -421,7 +427,7 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       var slicedHeading = heading.slice(20,heading.length-20);
 
       var aveBeta = filter(5,slicedBeta);
-      var aveHeading = filterGyro(1,slicedHeading);
+      var aveHeading = filterGyro(2,slicedHeading);
       window.localStorage['aveHead'] = aveHeading;
       var meanBeta = mean(aveBeta);
 
@@ -442,7 +448,6 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       function filterGyro(factor,arr){
         for(i=factor;i<arr.length-factor;i++){
           if(((arr[i] < arr[i-factor])  && (arr[i] < arr[i+factor]))){
-            if(((arr[i] - arr[i-factor]) > 10) || ((arr[i] - arr[i+factor]) > 10) )
             arr[i] = arr[i-factor];
           }
         }
