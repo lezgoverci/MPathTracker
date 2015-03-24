@@ -184,23 +184,23 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
         //   arr[i].d = "N";
         // }
 
-        if(((change >= 0) && (change < 45 ))||((change >= -360) && (change < -315 ))){
+        if(((change >= 0) && (change < 45 ))||((change > -360) && (change <= -315 ))){
           arr[i].d = "N";
         }
 
-        else if(((change >= 45) && (change < 135))||((change >= -315) && (change < -225))){
+        else if(((change >= 45) && (change < 135))||((change > -315) && (change <= -225))){
           arr[i].d = "E";
         }
 
-        else if(((change >= 135) && (change < 225 ))||((change >= -225) && (change < -135))){
+        else if(((change >= 135) && (change < 225 ))||((change > -225) && (change <= -135))){
           arr[i].d = "S";
         }
 
-        else if(((change >= 225) && (change < 315 ))||((change >= -135) && (change < -45 ))){
+        else if(((change >= 225) && (change < 315 ))||((change > -135) && (change <= -45 ))){
           arr[i].d = "W";
         }
 
-        else if(((change >= 315) && (change < 360 ))||((change >= -45) && (change < 0 ))){
+        else if(((change >= 315) && (change < 360 ))||((change > -45) && (change <= 0 ))){
           arr[i].d = "N";
         }
 
@@ -427,7 +427,7 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       var slicedHeading = heading.slice(20,heading.length-20);
 
       var aveBeta = filter(5,slicedBeta);
-      var aveHeading = filter(1,slicedHeading);
+      var aveHeading = filterGyro(2,slicedHeading);
       var meanBeta = mean(aveBeta);
 
 
@@ -444,15 +444,15 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       // alert(JSON.parse(window.localStorage['finalData']));
 
 
-      // function filterGyro(arr,factor){
-      //   for(i=factor;i<arr.length-factor;i++){
-      //     if((arr[i] < arr[i-factor]) && (arr[i] < arr[i+factor])){
-      //       arr[i] = arr[i-factor];
-      //     }
-      //   }
+      function filterGyro(factor,arr){
+        for(i=factor;i<arr.length-factor;i++){
+          if((arr[i] < arr[i-factor]) && (arr[i] < arr[i+factor]) && (arr[i] < arr[i-factor-1]) && (arr[i] < arr[i+factor-1])){
+            arr[i] = arr[i-factor];
+          }
+        }
 
-      //   return arr;
-      // }
+        return arr;
+      }
 
 
       // function findPath(heading){
