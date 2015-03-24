@@ -185,30 +185,22 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
         //   arr[i].d = "N";
         // }
 
-        if(((change >= 0) && (change < 45 ))||((change > -360) && (change <= -315 ))){
+        if(((change >= 0) && (change < 60 ))||((change > -360) && (change <= -300 ))){
           arr[i].d = "N";
         }
 
-        else if(((change >= 45) && (change < 135))||((change > -315) && (change <= -225))){
+        else if(((change >= 60) && (change < 180))||((change > -300) && (change <= -180))){
           arr[i].d = "E";
         }
 
-        else if(((change >= 135) && (change < 225 ))||((change > -225) && (change <= -135))){
-          arr[i].d = "S";
-        }
-
-        else if(((change >= 225) && (change < 315 ))||((change > -135) && (change <= -45 ))){
+        else if(((change >= 180) && (change < 300 ))||((change > -180) && (change <= -60))){
           arr[i].d = "W";
         }
 
-        else if(((change >= 315) && (change < 360 ))||((change > -45) && (change <= 0 ))){
+        else if(((change >= 300) && (change < 360 ))||((change > -60) && (change <= 0 ))){
           arr[i].d = "N";
         }
 
-
-        else{
-
-        }
 
         
 
