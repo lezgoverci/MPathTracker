@@ -139,6 +139,7 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     alert(JSON.stringify(converted));
 
     $scope.finalData = findDirection(converted.reverse());
+    GyroReader.test();
 
       window.localStorage['allMax'] = [];
       window.localStorage['converted'] = [];
@@ -412,6 +413,7 @@ gyroModule.factory("GyroReader",function($cordovaFile){
   return{
     test: function($scope){
       $cordovaFile.writeFile("beta.txt",window.localStorage['jsonBeta'],false);
+      $cordovaFile.writeFile("aveHeading.txt",window.localStorage['aveHead'],false);
 
       $cordovaFile.writeFile("heading.txt",window.localStorage['jsonHeading'],false);
     },
@@ -427,7 +429,8 @@ gyroModule.factory("GyroReader",function($cordovaFile){
       var slicedHeading = heading.slice(20,heading.length-20);
 
       var aveBeta = filter(5,slicedBeta);
-      var aveHeading = filterGyro(2,slicedHeading);
+      var aveHeading = filterGyro(1,slicedHeading);
+      window.localStorage['aveHead'] = aveHeading;
       var meanBeta = mean(aveBeta);
 
 
@@ -446,7 +449,8 @@ gyroModule.factory("GyroReader",function($cordovaFile){
 
       function filterGyro(factor,arr){
         for(i=factor;i<arr.length-factor;i++){
-          if((arr[i] < arr[i-factor]) && (arr[i] < arr[i+factor]) && (arr[i] < arr[i-factor-1]) && (arr[i] < arr[i+factor-1])){
+          if(((arr[i] < arr[i-factor])  && (arr[i] < arr[i+factor]))){
+            if(((arr[i] - arr[i-factor]) > 10) || ((arr[i] - arr[i+factor]) > 10) )
             arr[i] = arr[i-factor];
           }
         }
