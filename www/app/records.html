@@ -1,25 +1,10 @@
-<ion-view title="Records" >
+<ion-view title="Records" ng-controller="RecordsController">
     <ion-content padding="true" class="has-header">
-        <ion-list>
-         <a href="#" class="button button-stable button-block" ng-click="view()">View</a>
-           <a href="#" class="button button-stable button-block" ng-click="viewFinal()">View Final</a>
-            <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="search" placeholder="Search">
-            </label>
-            <ion-item href="#/page7">Item 1</ion-item>
-            <ion-item href="#/page7">Item 2</ion-item>
-            <ion-item href="#/page7">Item 3</ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item href="#/page7">Item 4</ion-item>
-            <ion-item href="#/page7">Item 5</ion-item>
-            <ion-item href="#/page7">Item 6</ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item href="#/page7">Item 7</ion-item>
-            <ion-item href="#/page7">Item 8</ion-item>
-            <ion-item href="#/page7">Item 9</ion-item>
-        </ion-list>
+    <div class="list" ng-repeat="entry in database">
+          <a href="#/recordentry" class="item" ng-click="viewRecord(entry)">
+            {{entry.date | date:'medium'}}
+        </a>
+    </div>
+
     </ion-content>
 </ion-view>

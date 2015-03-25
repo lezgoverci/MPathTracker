@@ -7,6 +7,9 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 
         $scope.push = function(){
             Compass.getCompassData($scope);
+            $scope.showStopBtn = true;
+            $scope.showLoadingIcon = true;
+            $scope.hideStartBtn = true;
         }
 
 
@@ -179,7 +182,13 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     // alert(JSON.stringify(converted));
 
     $scope.finalData = findDirection(converted.reverse());
-    GyroReader.test();
+    var prevDB = JSON.parse(window.localStorage['database'] || '[]');
+
+    var date = Date.now();
+    var newEntry = {date:date,val:$scope.finalData};
+
+    window.localStorage['database'] = JSON.stringify(prevDB.concat(newEntry));
+    // GyroReader.test();
 
       window.localStorage['allMax'] = [];
       window.localStorage['converted'] = [];
@@ -312,12 +321,6 @@ gyroModule.factory("HeadingConverter",function(){
       var test2 = analyzeMergeHeadings(test); 
       // alert(JSON.stringify(test2));
       window.localStorage['converted'] = JSON.stringify(test2);
-
-
-
-
-     
-
 
 
       function analyzeMergeHeadings(arr){
@@ -583,10 +586,25 @@ gyroModule.factory("GyroReader",function($cordovaFile){
   }
 });
 
-// gyroModule.controller("ViewGyroController",function($scope){
+gyroModule.controller("RecordsController",function($scope){
   
-//   alert($scope.finalData );
+var db = JSON.parse(window.localStorage['database']);
+
+$scope.database = db;
+
+$scope.viewRecord = function(entry){
+  var selected = JSON.stringify(entry);
+
+  window.localStorage['currentSelected'] = selected;
+}
+
+
 
   
 
-// });
+});
+
+gyroModule.controller("ViewRecordController",function($scope){
+    $scope.viewSelectedEntry = JSON.parse(window.localStorage['currentSelected']);
+  
+});
