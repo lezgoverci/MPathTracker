@@ -18,8 +18,25 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 });
 
 gyroModule.filter("attachDirImage",function(){
-  return function(dat){
-    return "samok";
+  return function(dir,data){
+    if(dir === "N"){
+      dir = "North";
+      data.i = "images/map.png";
+
+    }
+    else if(dir === "E"){
+      dir = "East";
+      data.i = "images/map.png";
+    }
+    else if(dir === "W"){
+      dir = "West";
+      data.i = "images/map.png";
+    }
+    else if(dir === "S"){
+      dir = "South";
+      data.i = "images/map.png";
+    }
+    return data;
    
   }
 });
