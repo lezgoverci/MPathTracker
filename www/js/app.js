@@ -7,7 +7,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 
-angular.module("trackerApp", ['ngCordova','ionic','GyroModule'])
+angular.module("trackerApp", ['ngCordova','ionic','GyroModule','ngAnimate'])
 
 
 .run(function($ionicPlatform) {

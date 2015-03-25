@@ -17,29 +17,45 @@ var gyroModule = angular.module('GyroModule',['ngCordova'])
 
 });
 
-gyroModule.filter("attachDirImage",function(){
-  return function(dir,data){
-    if(dir === "N"){
-      dir = "North";
-      data.i = "images/map.png";
+// gyroModule.filter("attachDirImage",function(){
+//   return function(dir,data){
+//     if(data.d === "N"){
+//       data.d = "North";
+//       data.i = "images/n.jpg";
 
-    }
-    else if(dir === "E"){
-      dir = "East";
-      data.i = "images/map.png";
-    }
-    else if(dir === "W"){
-      dir = "West";
-      data.i = "images/map.png";
-    }
-    else if(dir === "S"){
-      dir = "South";
-      data.i = "images/map.png";
-    }
-    return data;
+//     }
+//     else if(data.d === "NE"){
+//       data.d = "East";
+//       data.i = "images/ne.jpg";
+//     }
+//     else if(data.d === "E"){
+//       data.d = "East";
+//       data.i = "images/e.jpg";
+//     }
+//     else if(data.d === "SE"){
+//       data.d = "East";
+//       data.i = "images/se.jpg";
+//     }
+//     else if(data.d === "W"){
+//       data.d = "West";
+//       data.i = "images/w.jpg";
+//     }
+//     else if(data.d === "NW"){
+//       data.d = "East";
+//       data.i = "images/nw.jpg";
+//     }
+//     else if(data.d === "SW"){
+//       data.d = "East";
+//       data.i = "images/sw.jpg";
+//     }
+//     else if(data.d === "S"){
+//       data.d = "South";
+//       data.i = "images/s.jpg";
+//     }
+//     return data.s;
    
-  }
-});
+//   }
+// });
 
 gyroModule.factory('Compass',function($cordovaDeviceOrientation,cordovaReady,$cordovaFile){
 
@@ -185,30 +201,39 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
 
         if(((change >= 0) && (change < 22.5 ))||((change >= -360) && (change < -337.5 ))){
           arr[i].d = "N";
+          arr[i].i = "images/n.jpg";
         }
         else if(((change >= 22.5) && (change < 67.5 ))||((change >= -337.5) && (change < -292.5 ))){
           arr[i].d = "NE";
+          arr[i].i = "images/ne.jpg";
         }
         else if(((change >= 67.5) && (change < 112.5 ))||((change >= -292.5) && (change < -247.5 ))){
           arr[i].d = "E";
+          arr[i].i = "images/e.jpg";
         }
         else if(((change >= 112.5) && (change < 157.5 ))||((change >= -247.5) && (change < -202.5 ))){
           arr[i].d = "SE";
+          arr[i].i = "images/se.jpg";
         }
         else if(((change >= 157.5) && (change < 202.5 ))||((change >= -202.5) && (change < -157.5 ))){
           arr[i].d = "S";
+          arr[i].i = "images/s.jpg";
         }
         else if(((change >= 202.5) && (change < 247.5 ))||((change >= -157.5) && (change < -112.5 ))){
           arr[i].d = "SW";
+          arr[i].i = "images/sw.jpg";
         }
         else if(((change >= 247.5) && (change < 292.5 ))||((change >= -112.5) && (change < -67.5 ))){
           arr[i].d = "W";
+          arr[i].i = "images/w.jpg";
         }
         else if(((change >= 292.5) && (change < 337.5 ))||((change >= -67.5) && (change < -22.5 ))){
           arr[i].d = "NW";
+          arr[i].i = "images/nw.jpg";
         }
         else if(((change >= 337.5) && (change < 360 ))||((change >= -22.5) && (change < 0 ))){
           arr[i].d = "N";
+          arr[i].i = "images/n.jpg";
         }
         
         // if(((change >= 0) && (change < 45 ))||((change > -360) && (change <= -315 ))){
