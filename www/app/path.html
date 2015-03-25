@@ -1,7 +1,7 @@
 <ion-view title="Path track" ng-controller="AnalyzerController">
 
     <ion-content padding="true" class="has-header has-footer">
-    <div class="list" ng-repeat="data in finalData " ng-click="done={color: 'red'}" >
+    <div class="card" ng-repeat="data in finalData " ng-click="done={color: 'red'}" >
       <a class="item item-thumbnail-right" href="#" >
         <img ng-src="{{data.i}}" >
         <h1 ng-style="done">{{data.s * 2}} steps</h1>
