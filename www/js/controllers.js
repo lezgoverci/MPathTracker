@@ -176,7 +176,7 @@ gyroModule.controller("AnalyzerController",function($cordovaFile,$scope,GyroRead
     var converted = JSON.parse(window.localStorage['converted']);
     // HeadingConverter.invert(converted);
     // var inverted = JSON.parse(window.localStorage['inverted']);
-    alert(JSON.stringify(converted));
+    // alert(JSON.stringify(converted));
 
     $scope.finalData = findDirection(converted.reverse());
     GyroReader.test();
@@ -310,7 +310,7 @@ gyroModule.factory("HeadingConverter",function(){
       var test = mergeHeadings(arr);
       
       var test2 = analyzeMergeHeadings(test); 
-      alert(JSON.stringify(test2));
+      // alert(JSON.stringify(test2));
       window.localStorage['converted'] = JSON.stringify(test2);
 
 
