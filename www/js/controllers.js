@@ -595,7 +595,7 @@ $scope.database = db;
 $scope.viewRecord = function(entry){
   var selected = JSON.stringify(entry);
 
-  window.localStorage['currentSelected'] = selected;
+  window.localStorage['currentSelected'] = selected.reverse();
 }
 
 
